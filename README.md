@@ -1,2 +1,2 @@
 # battletank
-A simple tank battle game with basic AI enemies
+A simple tank battle game with basic AI enemies!
