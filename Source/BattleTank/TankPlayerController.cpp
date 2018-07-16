@@ -32,7 +32,82 @@ void ATankPlayerController::AimTowardsCrosshair()
 {
 	if (!GetControlledTank()) { return; }
 
-	// Get world location if linetrace through crosshair
-	// if it hits the landscape
-			// Tell ctrolled tank to aim at this point
+	FVector HitLocation; // OUT param
+	if (GetSightRayHitLocation(HitLocation)) { // has a "side-effect, is going to line trace
+		UE_LOG(LogTemp, Warning, TEXT("Look direction: %s"), *HitLocation.ToString());
+		// TODO Tell controlled tank to aim at this point
+	}
+	
+}
+
+// Get world location if linetrace through crosshair, true if hits landscape
+bool ATankPlayerController::GetSightRayHitLocation(FVector& OutHitLocation) const
+{
+	// Find the crosshair position
+	int32 ViewportSizeX, ViewportSizeY;
+	GetViewportSize(ViewportSizeX, ViewportSizeY);
+	
+	auto ScreenLocation = FVector2D(ViewportSizeX * CrossHairXLocation, ViewportSizeY * CrossHairYLocation);
+
+	FVector LookDirection;
+	FVector LookLocation;
+	if (GetLookDirection(ScreenLocation, LookDirection, LookLocation))
+	{
+		GetLookVectorHitLocation(LookDirection, LookLocation, OutHitLocation);
+
+	}
+	//    UE_LOG(LogTemp,Warning,TEXT("LookDirection: %s"), *LookDirection.ToString())
+	//OutHitLocation = FVector(1.0f);
+	return true;
+}
+
+bool ATankPlayerController::GetLookDirection(FVector2D ScreenLocation, FVector &LookDirection, FVector &LookLocation) const
+{
+	FVector CameraWorldLocation; // To Be Trashed
+
+	return DeprojectScreenPositionToWorld
+	(
+		ScreenLocation.X,
+		ScreenLocation.Y,
+		LookLocation,
+		LookDirection
+	);
+}
+
+
+bool ATankPlayerController::GetLookVectorHitLocation(FVector LookDirection, FVector &LookLocation, FVector &HitLocation) const
+{
+	FVector PlayerViewPointLocation;
+	FRotator PlayerViewPointRotation;
+	FHitResult HitResult;
+	FVector EndLocation = LookLocation + (LookDirection * LineTraceRange);
+	FCollisionQueryParams TraceParameters(FName(TEXT("")), false, GetOwner());
+	FCollisionResponseParams ResponseParameters = FCollisionResponseParams();
+
+	DrawDebugLine(
+		GetWorld(),
+		LookLocation,
+		EndLocation,
+		FColor(255, 0, 0),
+		false, -1, 0,
+		5
+	);
+
+
+	if (GetWorld()->LineTraceSingleByChannel
+	(
+		HitResult,
+		LookLocation,
+		EndLocation,
+		ECC_Visibility,
+		TraceParameters,
+		ResponseParameters
+	))
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Captain We've Hit something"))
+		HitLocation = HitResult.Location;
+		return true;
+	}
+	
+	return false;
 }
