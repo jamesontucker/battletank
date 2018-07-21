@@ -1,6 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "TankPlayerController.h"
+#include "Tank.h"
 
 void ATankPlayerController::BeginPlay()
 {
@@ -83,14 +84,14 @@ bool ATankPlayerController::GetLookVectorHitLocation(FVector LookDirection, FVec
 	FCollisionQueryParams TraceParameters(FName(TEXT("")), false, GetOwner());
 	FCollisionResponseParams ResponseParameters = FCollisionResponseParams();
 
-	DrawDebugLine(
+	/*DrawDebugLine(
 		GetWorld(),
 		LookLocation,
 		EndLocation,
 		FColor(255, 0, 0),
 		false, -1, 0,
 		5
-	);
+	);*/
 
 
 	if (GetWorld()->LineTraceSingleByChannel
