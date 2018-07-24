@@ -73,7 +73,7 @@ bool ATankPlayerController::GetLookVectorHitLocation(FVector LookDirection, FVec
 	FCollisionQueryParams TraceParameters(FName(TEXT("")), false, GetOwner());
 	FCollisionResponseParams ResponseParameters = FCollisionResponseParams();
 
-	/*DrawDebugLine(
+	/*DrawDebugLine( // Draw line for debugging line trace
 		GetWorld(),
 		LookLocation,
 		EndLocation,
@@ -93,7 +93,6 @@ bool ATankPlayerController::GetLookVectorHitLocation(FVector LookDirection, FVec
 		ResponseParameters
 	))
 	{
-		//UE_LOG(LogTemp, Warning, TEXT("Captain We've Hit something"))
 		HitLocation = HitResult.Location;
 		return true;
 	}
