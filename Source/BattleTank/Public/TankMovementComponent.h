@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+// Copywrite Jameson.t
 
 #pragma once
 
@@ -27,11 +27,12 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = Input)
 	void IntendTurnRight(float Throw);
-
-	//TODO check best protection
-	virtual void RequestDirectMove(const FVector& MoveVelocity, bool bForceMaxSpeed);
 	
 private:
+
+	// Called from the pathfinding logic by the AI Controllers
+	virtual void RequestDirectMove(const FVector& MoveVelocity, bool bForceMaxSpeed);
+
 	UTankTrack* LeftTrack = nullptr;
 	UTankTrack* RightTrack = nullptr;
 };
