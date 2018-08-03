@@ -8,6 +8,8 @@
 //#include "Particles/ParticleSystem.h"
 #include "Particles/ParticleSystemComponent.h"
 #include "PhysicsEngine/RadialForceComponent.h"
+//#include "TimerManager.h"
+//#include "Engine/World.h"
 #include "Projectile.generated.h"
 
 UCLASS()
@@ -27,10 +29,15 @@ protected:
 
 	UProjectileMovementComponent* ProjectileMovement = nullptr;
 
-public:	
+private:	
 
 	UFUNCTION()
 	void OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComponent, FVector NormalImpulse, const FHitResult& Hit);
+
+	void OnTimerExpire();
+
+	UPROPERTY(EditDefaultsOnly, Category = "Setup")
+	float DestroyDelay = 10.f;
 
 	UPROPERTY(VisibleAnywhere, Category = "Components")
 	UStaticMeshComponent* CollisionMesh = nullptr;
