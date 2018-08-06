@@ -64,7 +64,7 @@ bool UTankAimingComponent::IsBarrelMoving()
 
 	auto BarrelForward = Barrel->GetForwardVector();
 	
-	return !BarrelForward.Equals(AimDirection, 0.01);
+	return !BarrelForward.Equals(TargetAimDirection, 0.01);
 	
 }
 
@@ -90,18 +90,18 @@ void UTankAimingComponent::AimAt(FVector HitLocation)
 
 	if (bHaveAimSolution)
 	{
-		AimDirection = OutLaunchVelocity.GetSafeNormal();
-		MoveBarrelTowards(AimDirection);
+		TargetAimDirection = OutLaunchVelocity.GetSafeNormal();
+		MoveBarrelTowards(TargetAimDirection);
 	}
 }
 
-void UTankAimingComponent::MoveBarrelTowards(FVector AimDirection)
+void UTankAimingComponent::MoveBarrelTowards(FVector TargetAimDirection)
 {
 	if (!ensure(Barrel) || !ensure(Turret)) { return; }
 
 	// Work-out difference between current barrel rotation, and AimDirection
 	auto BarrelRotator = Barrel->GetForwardVector().Rotation();
-	auto AimAsRotator = AimDirection.Rotation();
+	auto AimAsRotator = TargetAimDirection.Rotation();
 	auto DeltaRotator = AimAsRotator - BarrelRotator;
 
 	Barrel->Elevate(DeltaRotator.Pitch);
