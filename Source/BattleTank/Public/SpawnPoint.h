@@ -20,6 +20,8 @@ public:
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
+	AActor* GetSpawnedActor() const { return SpawnedActor; }
+
 protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
@@ -28,5 +30,8 @@ private:
 
 	UPROPERTY(EditDefaultsOnly, Category = "Setup")
 	TSubclassOf<AActor> SpawnClass;
+
+	UPROPERTY()
+	AActor* SpawnedActor;
 	
 };
